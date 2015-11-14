@@ -12,4 +12,16 @@ describe Plaid::Institution do
   context 'when institution is not found' do
     it { expect { Plaid.institution('dumb_bank') }.to raise_error }
   end
+
+  context 'when long tail institutions are found' do
+    let(:institution) { Plaid.long_tail_institutions }
+    before do
+      expect(Plaid::Connection).to receive(:post).with(
+        'institutions/longtail', {}) {
+        { 'total_count' => 42,
+          'results' => Plaid::Connection.get('institutions') }
+      }
+    end
+    it { expect(institution).to be_kind_of(Array) }
+  end
 end

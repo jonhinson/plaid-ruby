@@ -88,6 +88,13 @@ module Plaid
     end
 
     # API: public
+    # Builds a collection of long tail institution objects
+    def long_tail_institutions(options = {})
+      res = Connection.post('institutions/longtail', options)
+      Institution.all(res['results'])
+    end
+
+    # API: public
     # Builds an category object and returns when the category details exist
     def category(id = nil)
       res = Connection.get('categories', id)
